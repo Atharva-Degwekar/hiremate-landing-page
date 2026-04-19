@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "HireMate" },
+      { name: "description", content: "HireMate offers AI-powered mock interviews for Indian job seekers preparing for PM, SWE, and Analyst roles." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "HireMate" },
+      { property: "og:description", content: "HireMate offers AI-powered mock interviews for Indian job seekers preparing for PM, SWE, and Analyst roles." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "HireMate" },
+      { name: "twitter:description", content: "HireMate offers AI-powered mock interviews for Indian job seekers preparing for PM, SWE, and Analyst roles." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4T6k1zF0MDMOGUYr8hmVnlS6bSr2/social-images/social-1776619497222-Screenshot_2026-04-19_165324.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4T6k1zF0MDMOGUYr8hmVnlS6bSr2/social-images/social-1776619497222-Screenshot_2026-04-19_165324.webp" },
     ],
     links: [
       {
