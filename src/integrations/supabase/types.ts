@@ -14,16 +14,177 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      interview_sessions: {
+        Row: {
+          benchmark_percentile: number | null
+          category_scores: Json | null
+          completed_at: string | null
+          created_at: string
+          difficulty: string
+          duration_seconds: number | null
+          filler_count: number | null
+          id: string
+          next_steps: string[] | null
+          overall_score: number | null
+          pace_wpm: number | null
+          role: string
+          status: string
+          strengths: string[] | null
+          user_id: string
+          weaknesses: string[] | null
+        }
+        Insert: {
+          benchmark_percentile?: number | null
+          category_scores?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          difficulty?: string
+          duration_seconds?: number | null
+          filler_count?: number | null
+          id?: string
+          next_steps?: string[] | null
+          overall_score?: number | null
+          pace_wpm?: number | null
+          role: string
+          status?: string
+          strengths?: string[] | null
+          user_id: string
+          weaknesses?: string[] | null
+        }
+        Update: {
+          benchmark_percentile?: number | null
+          category_scores?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          difficulty?: string
+          duration_seconds?: number | null
+          filler_count?: number | null
+          id?: string
+          next_steps?: string[] | null
+          overall_score?: number | null
+          pace_wpm?: number | null
+          role?: string
+          status?: string
+          strengths?: string[] | null
+          user_id?: string
+          weaknesses?: string[] | null
+        }
+        Relationships: []
+      }
+      interview_turns: {
+        Row: {
+          answer: string | null
+          created_at: string
+          feedback: string | null
+          highlights: Json | null
+          id: string
+          question: string
+          question_index: number
+          score: number | null
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string
+          feedback?: string | null
+          highlights?: Json | null
+          id?: string
+          question: string
+          question_index: number
+          score?: number | null
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string
+          feedback?: string | null
+          highlights?: Json | null
+          id?: string
+          question?: string
+          question_index?: number
+          score?: number | null
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_turns_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "interview_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          card_last4: string | null
+          created_at: string
+          current_period_end: string | null
+          id: string
+          plan: Database["public"]["Enums"]["plan_tier"]
+          status: Database["public"]["Enums"]["sub_status"]
+          trial_ends_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          card_last4?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          status?: Database["public"]["Enums"]["sub_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          card_last4?: string | null
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          status?: Database["public"]["Enums"]["sub_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_premium: { Args: { _user: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      plan_tier: "free" | "pro" | "premium"
+      sub_status: "trialing" | "active" | "canceled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +311,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      plan_tier: ["free", "pro", "premium"],
+      sub_status: ["trialing", "active", "canceled"],
+    },
   },
 } as const
