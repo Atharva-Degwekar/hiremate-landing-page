@@ -72,7 +72,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         subscription,
         isPremium,
-        refreshSubscription: async () => user && loadSub(user.id),
+        refreshSubscription: async () => {
+          if (user) await loadSub(user.id);
+        },
         signOut: async () => {
           await supabase.auth.signOut();
         },
