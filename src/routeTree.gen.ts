@@ -9,38 +9,148 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InterviewSessionIdRouteImport } from './routes/interview.$sessionId'
+import { Route as AnalysisSessionIdRouteImport } from './routes/analysis.$sessionId'
 
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InterviewSessionIdRoute = InterviewSessionIdRouteImport.update({
+  id: '/interview/$sessionId',
+  path: '/interview/$sessionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalysisSessionIdRoute = AnalysisSessionIdRouteImport.update({
+  id: '/analysis/$sessionId',
+  path: '/analysis/$sessionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/checkout': typeof CheckoutRoute
+  '/dashboard': typeof DashboardRoute
+  '/pricing': typeof PricingRoute
+  '/analysis/$sessionId': typeof AnalysisSessionIdRoute
+  '/interview/$sessionId': typeof InterviewSessionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/checkout': typeof CheckoutRoute
+  '/dashboard': typeof DashboardRoute
+  '/pricing': typeof PricingRoute
+  '/analysis/$sessionId': typeof AnalysisSessionIdRoute
+  '/interview/$sessionId': typeof InterviewSessionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/checkout': typeof CheckoutRoute
+  '/dashboard': typeof DashboardRoute
+  '/pricing': typeof PricingRoute
+  '/analysis/$sessionId': typeof AnalysisSessionIdRoute
+  '/interview/$sessionId': typeof InterviewSessionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/checkout'
+    | '/dashboard'
+    | '/pricing'
+    | '/analysis/$sessionId'
+    | '/interview/$sessionId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/checkout'
+    | '/dashboard'
+    | '/pricing'
+    | '/analysis/$sessionId'
+    | '/interview/$sessionId'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/checkout'
+    | '/dashboard'
+    | '/pricing'
+    | '/analysis/$sessionId'
+    | '/interview/$sessionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  CheckoutRoute: typeof CheckoutRoute
+  DashboardRoute: typeof DashboardRoute
+  PricingRoute: typeof PricingRoute
+  AnalysisSessionIdRoute: typeof AnalysisSessionIdRoute
+  InterviewSessionIdRoute: typeof InterviewSessionIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,21 +158,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/interview/$sessionId': {
+      id: '/interview/$sessionId'
+      path: '/interview/$sessionId'
+      fullPath: '/interview/$sessionId'
+      preLoaderRoute: typeof InterviewSessionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analysis/$sessionId': {
+      id: '/analysis/$sessionId'
+      path: '/analysis/$sessionId'
+      fullPath: '/analysis/$sessionId'
+      preLoaderRoute: typeof AnalysisSessionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  CheckoutRoute: CheckoutRoute,
+  DashboardRoute: DashboardRoute,
+  PricingRoute: PricingRoute,
+  AnalysisSessionIdRoute: AnalysisSessionIdRoute,
+  InterviewSessionIdRoute: InterviewSessionIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

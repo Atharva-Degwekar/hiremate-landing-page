@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, Crown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 const links = [
   { label: "Features", href: "#features" },
   { label: "How it Works", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Pricing", href: "/pricing", route: true },
   { label: "Reviews", href: "#reviews" },
 ];
 
@@ -13,6 +15,11 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
+  const { user, isPremium, subscription } = useAuth();
+  const trialDays =
+    subscription?.status === "trialing" && subscription.trial_ends_at
+      ? Math.max(0, Math.ceil((new Date(subscription.trial_ends_at).getTime() - Date.now()) / 86400000))
+      : null;
 
   useEffect(() => {
     const onScroll = () => {
@@ -82,20 +89,69 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <a
-            href="#waitlist"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Login
-          </a>
-          <a
-            href="#waitlist"
+          {trialDays !== null && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-orange/10 px-3 py-1 text-xs font-bold text-accent-orange">
+              <Crown size={11} /> Trial: {trialDays}d
+            </span>
+          )}
+          {user ? (
+            <Link to="/dashboard" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Dashboard
+            </Link>
+          ) : (
+            <Link to="/auth" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Login
+            </Link>
+          )}
+          <Link
+            to={user ? "/dashboard" : "/auth"}
             className="group inline-flex items-center gap-1.5 rounded-full bg-gradient-brand px-5 py-2.5 text-sm font-semibold text-white shadow-elegant transition-all hover:-translate-y-0.5 hover:shadow-[0_25px_60px_-20px_rgba(231,76,60,0.55)]"
           >
             Start Practicing
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
-          </a>
+          </Link>
         </div>
+
+        <button
+          className="md:hidden p-2 text-foreground"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </nav>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden overflow-hidden border-t border-border bg-white px-6 py-4 space-y-3"
+          >
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="block text-sm font-medium text-muted-foreground"
+              >
+                {l.label}
+              </a>
+            ))}
+            <Link
+              to={user ? "/dashboard" : "/auth"}
+              onClick={() => setOpen(false)}
+              className="block w-full text-center rounded-full bg-gradient-brand px-5 py-2.5 text-sm font-semibold text-white"
+            >
+              Start Practicing
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
 
         <button
           className="md:hidden p-2 text-foreground"
